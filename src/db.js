@@ -117,3 +117,11 @@ try {
 }
 
 module.exports = db;
+
+if (db.prepare('SELECT COUNT(*) c FROM users').get().c === 0) {
+  const bcrypt = require('bcryptjs');
+  const ins = db.prepare('INSERT INTO users (nama, nim, password, role, asrama) VALUES (?,?,?,?,?)');
+  ins.run('Bapak Asrama', 'pembina', bcrypt.hashSync('pembina123', 10), 'pembina', null);
+  ins.run('Mahasiswa Contoh 1', '1001', bcrypt.hashSync('mhs123', 10), 'mahasiswa', 'Asrama Simon Love Place');
+  ins.run('Mahasiswa Contoh 2', '1002', bcrypt.hashSync('mhs123', 10), 'mahasiswa', 'Asrama Ada Love Place');
+}
